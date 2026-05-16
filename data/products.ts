@@ -12,7 +12,7 @@ export const products: Product[] = [
     id: 1,
     name: "Royal Indigo Damask",
     price: 45000,
-    image: "/images/5C3cc.jpg",   // adjust names as needed
+    image: "/images/5C3cc.jpg",
     category: "Damask",
     description: "Premium quality indigo luxury fabric",
   },
@@ -24,7 +24,6 @@ export const products: Product[] = [
     category: "Brocade",
     description: "Exquisite gold-embellished textile",
   },
-  // Add more products (use your other images)
   {
     id: 3,
     name: "Velvet Silk Blend",
@@ -33,4 +32,5 @@ export const products: Product[] = [
     category: "Silk",
     description: "Soft luxurious velvet silk",
   },
+  // Add the rest of your images here (6ca4g.jpg, V0QmK.jpg, YeCGb.jpg, etc.)
 ];
