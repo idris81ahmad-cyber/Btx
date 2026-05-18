@@ -8,6 +8,7 @@ export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [removeConfirm, setRemoveConfirm] = useState<number | null>(null);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -15,37 +16,18 @@ export default function Home() {
     setIsHydrated(true);
   }, []);
 
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    if (isHydrated) {
-      cartStorage.saveCart(cart);
-    }
-  }, [cart, isHydrated]);
-
   const addToCart = (product: Product) => {
     const updatedCart = cartStorage.addItem(product);
     setCart(updatedCart);
   };
 
-  const removeFromCart = (id: number, showConfirmation = true) => {
-    if (showConfirmation) {
-      if (
-        !confirm(
-          "Are you sure you want to remove this item from your cart?"
-        )
-      ) {
-        return;
-      }
-    }
+  const removeFromCart = (id: number) => {
     const updatedCart = cartStorage.removeItem(id);
     setCart(updatedCart);
+    setRemoveConfirm(null);
   };
 
   const updateQuantity = (id: number, quantity: number) => {
-    if (quantity < 1) {
-      removeFromCart(id, true);
-      return;
-    }
     const updatedCart = cartStorage.updateQuantity(id, quantity);
     setCart(updatedCart);
   };
@@ -54,7 +36,7 @@ export default function Home() {
   const totalItems = cartStorage.getTotalItems(cart);
 
   if (!isHydrated) {
-    return null; // Prevent hydration mismatch
+    return null; // Avoid hydration mismatch
   }
 
   return (
@@ -62,9 +44,7 @@ export default function Home() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-black/90 backdrop-blur-md z-50 border-b border-[#d4af37]/30">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="text-2xl font-bold tracking-wider luxury-gold">
-            BIYORA
-          </div>
+          <div className="text-2xl font-bold tracking-wider luxury-gold">BIYORA</div>
 
           <div className="flex items-center gap-8">
             <a href="#shop" className="hover:text-[#d4af37] transition-colors">
@@ -93,12 +73,9 @@ export default function Home() {
           <h1 className="text-7xl md:text-8xl font-serif tracking-tight mb-6">
             Luxury Redefined
           </h1>
-          <p className="text-2xl text-[#d4af37] mb-8">
-            Premium African Textiles
-          </p>
+          <p className="text-2xl text-[#d4af37] mb-8">Premium African Textiles</p>
           <p className="max-w-md mx-auto text-lg opacity-80">
-            Timeless elegance in every thread. Handpicked fabrics for the
-            distinguished.
+            Timeless elegance in every thread. Handpicked fabrics for the distinguished.
           </p>
           <a
             href="#shop"
@@ -111,9 +88,7 @@ export default function Home() {
 
       {/* Products Section */}
       <section id="shop" className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-5xl font-serif text-center mb-16">
-          Our Collection
-        </h2>
+        <h2 className="text-5xl font-serif text-center mb-16">Our Collection</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
@@ -134,14 +109,10 @@ export default function Home() {
                   {product.category}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                <p className="text-sm opacity-70 mb-4 line-clamp-2">
-                  {product.description}
-                </p>
+                <p className="text-sm opacity-70 mb-4 line-clamp-2">{product.description}</p>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-medium">
-                    ₦{product.price.toLocaleString()}
-                  </span>
+                  <span className="text-2xl font-medium">₦{product.price.toLocaleString()}</span>
                   <button
                     onClick={() => addToCart(product)}
                     className="btn-gold px-6 py-3 rounded-xl text-sm"
@@ -161,87 +132,92 @@ export default function Home() {
           <div className="bg-zinc-950 w-full max-w-md h-full overflow-auto">
             <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
               <h2 className="text-2xl">Your Cart ({totalItems})</h2>
-              <button
-                onClick={() => setIsCartOpen(false)}
-                className="text-3xl hover:text-[#d4af37] transition-colors"
-              >
+              <button onClick={() => setIsCartOpen(false)} className="text-3xl">
                 ×
               </button>
             </div>
 
             <div className="p-6 space-y-6">
               {cart.length === 0 ? (
-                <p className="text-center py-10 opacity-60">
-                  Your cart is empty
-                </p>
+                <p className="text-center py-10 opacity-60">Your cart is empty</p>
               ) : (
                 <>
                   {cart.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex gap-4 border-b border-zinc-800 pb-6"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-20 h-20 object-cover rounded"
-                      />
-                      <div className="flex-1">
-                        <h4 className="font-medium">{item.name}</h4>
-                        <p className="text-[#d4af37] text-sm">
-                          ₦{item.price.toLocaleString()}
-                        </p>
+                    <div key={item.id} className="border-b border-zinc-800 pb-6">
+                      <div className="flex gap-4 mb-4">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-20 h-20 object-cover rounded"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-medium">{item.name}</h4>
+                          <p className="text-[#d4af37]">₦{item.price.toLocaleString()}</p>
+                        </div>
+                        <button
+                          onClick={() => setRemoveConfirm(item.id)}
+                          className="text-red-400 hover:text-red-500 text-2xl h-fit"
+                        >
+                          ×
+                        </button>
+                      </div>
 
-                        {/* Quantity Controls */}
-                        <div className="flex items-center gap-3 mt-3">
+                      {/* Quantity Controls */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 bg-zinc-800 rounded-lg px-3 py-2">
                           <button
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
-                            className="w-6 h-6 flex items-center justify-center bg-zinc-800 hover:bg-[#d4af37] hover:text-black rounded transition-colors text-sm font-bold"
+                            className="text-[#d4af37] hover:text-yellow-300 font-semibold w-6"
                           >
                             −
                           </button>
-                          <span className="w-8 text-center font-semibold">
-                            {item.quantity}
-                          </span>
+                          <span className="w-6 text-center font-medium">{item.quantity}</span>
                           <button
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="w-6 h-6 flex items-center justify-center bg-zinc-800 hover:bg-[#d4af37] hover:text-black rounded transition-colors text-sm font-bold"
+                            className="text-[#d4af37] hover:text-yellow-300 font-semibold w-6"
                           >
                             +
                           </button>
                         </div>
-
-                        {/* Subtotal */}
-                        <p className="text-xs text-gray-400 mt-2">
-                          Subtotal: ₦
-                          {(item.price * item.quantity).toLocaleString()}
-                        </p>
+                        <span className="font-semibold">
+                          ₦{(item.price * item.quantity).toLocaleString()}
+                        </span>
                       </div>
 
-                      {/* Remove Button */}
-                      <button
-                        onClick={() => removeFromCart(item.id, true)}
-                        className="text-red-400 hover:text-red-500 self-start pt-1 transition-colors"
-                        title="Remove item"
-                      >
-                        🗑
-                      </button>
+                      {/* Remove Confirmation */}
+                      {removeConfirm === item.id && (
+                        <div className="mt-4 bg-red-500/20 border border-red-500/50 rounded-lg p-3">
+                          <p className="text-sm mb-3">Remove this item?</p>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => removeFromCart(item.id)}
+                              className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded text-sm"
+                            >
+                              Confirm
+                            </button>
+                            <button
+                              onClick={() => setRemoveConfirm(null)}
+                              className="flex-1 bg-zinc-700 hover:bg-zinc-600 py-2 rounded text-sm"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
 
                   <div className="pt-6">
                     <div className="flex justify-between text-xl mb-8">
                       <span>Total</span>
-                      <span className="font-semibold">
-                        ₦{totalPrice.toLocaleString()}
-                      </span>
+                      <span className="font-semibold">₦{totalPrice.toLocaleString()}</span>
                     </div>
 
-                    <button className="w-full btn-gold py-4 rounded-2xl text-lg hover:bg-[#f0d070]">
+                    <button className="w-full btn-gold py-4 rounded-2xl text-lg">
                       Proceed to Checkout
                     </button>
                   </div>
