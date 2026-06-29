@@ -173,9 +173,9 @@ export default function BiyoraHome() {
             <div className="hidden md:block text-sm text-[#d4af37]/70 tracking-widest">KANO, NIGERIA</div>
             
             {/* Cart Button */}
-            <div className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all cursor-pointer">
+            <div className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]">
               <span className="text-[#d4af37] font-medium text-sm">Cart</span>
-              <div className="bg-[#d4af37] text-black text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full px-1.5">
+              <div className="bg-[#d4af37] text-black text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full px-1.5 transition-all">
                 {cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function BiyoraHome() {
         <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.6px,transparent_1px)] bg-[length:28px_28px] opacity-[0.06]"></div>
         
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37]">
+          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37] transition-all">
             EST. 2026 • KANO
           </div>
           
@@ -203,15 +203,15 @@ export default function BiyoraHome() {
 
           <button 
             onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group bg-[#d4af37] hover:bg-white text-black font-semibold px-14 py-5 rounded-3xl text-lg transition-all active:scale-[0.985] flex items-center gap-3 mx-auto"
+            className="group bg-[#d4af37] hover:bg-white text-black font-semibold px-14 py-5 rounded-3xl text-lg transition-all duration-200 active:scale-[0.985] flex items-center gap-3 mx-auto"
           >
             Shop the Collection
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
+            <span className="group-hover:translate-x-0.5 transition-transform duration-200">→</span>
           </button>
         </div>
 
         {/* Subtle scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px]">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px] transition-opacity hover:opacity-100">
           SCROLL TO EXPLORE
         </div>
       </div>
@@ -248,10 +248,10 @@ export default function BiyoraHome() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all border ${ 
+                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all duration-200 border active:scale-[0.985] ${ 
                   selectedCategory === category 
                     ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20' 
-                    : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white'
+                    : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white hover:bg-white/5'
                 }`}
               >
                 {category}
@@ -260,7 +260,7 @@ export default function BiyoraHome() {
             {(searchQuery || selectedCategory !== 'All') && (
               <button
                 onClick={clearFilters}
-                className="px-5 py-3 rounded-3xl text-sm font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-all"
+                className="px-5 py-3 rounded-3xl text-sm font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 active:scale-[0.985] transition-all duration-200"
               >
                 Clear
               </button>
@@ -286,7 +286,7 @@ export default function BiyoraHome() {
             <p className="text-gray-400">Try a different search or filter</p>
             <button 
               onClick={clearFilters}
-              className="mt-8 px-10 py-4 rounded-3xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 transition-all"
+              className="mt-8 px-10 py-4 rounded-3xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 active:scale-[0.985] transition-all duration-200"
             >
               Clear all filters
             </button>
@@ -296,24 +296,23 @@ export default function BiyoraHome() {
 
       {/* Improved Floating Cart */}
       {cart.length > 0 && (
-        <div className="fixed bottom-6 right-6 bg-zinc-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-sm w-full z-50">
+        <div className="fixed bottom-6 right-6 bg-zinc-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-sm w-full z-50 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-semibold text-2xl tracking-tight">Your Cart</h3>
-            <span className="text-sm px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] rounded-full">
+            <span className="text-sm px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] rounded-full transition-all">
               {cart.length} {cart.length === 1 ? 'item' : 'items'}
             </span>
           </h3>
           
           <div className="max-h-[220px] overflow-auto mb-6 pr-1 space-y-5 text-sm">
             {cart.map((item) => (
-              <div key={item.id} className="flex justify-between items-start gap-4">
+              <div key={item.id} className="flex justify-between items-start gap-4 transition-all">
                 <div className="flex-1">
                   <div className="font-medium leading-tight">{item.name}</div>
                   <div className="text-xs text-[#d4af37]/60 mt-0.5">Quantity: {item.quantity}</div>
                 </div>
                 <div className="font-semibold whitespace-nowrap text-right">
-                  \u20a6{(item.price * item.quantity).toLocaleString()}
-                </div>
+                  \u20a6{(item.price * item.quantity).toLocaleString()}</div>
               </div>
             ))}
           </div>
@@ -330,13 +329,13 @@ export default function BiyoraHome() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email for receipt"
-            className="w-full bg-zinc-950 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-4 mb-4 text-sm placeholder:text-gray-500 focus:outline-none transition-all"
+            className="w-full bg-zinc-950 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-4 mb-4 text-sm placeholder:text-gray-500 focus:outline-none transition-all duration-200"
           />
 
           <button
             onClick={handlePaystackPayment}
             disabled={isProcessing || isVerifying}
-            className="w-full bg-[#d4af37] hover:bg-white disabled:bg-gray-700 text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all active:scale-[0.985]"
+            className="w-full bg-[#d4af37] hover:bg-white disabled:bg-gray-700 text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all duration-200 active:scale-[0.985]"
           >
             {isVerifying ? 'Verifying Payment...' : isProcessing ? 'Processing...' : 'Pay Securely with Paystack'}
           </button>
@@ -354,7 +353,7 @@ export default function BiyoraHome() {
 
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-3xl shadow-2xl z-[100] text-sm font-medium
+        <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-3xl shadow-2xl z-[100] text-sm font-medium transition-all duration-300
           ${toast.type === 'success' ? 'bg-green-600' : toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`}>
           {toast.message}
         </div>
