@@ -23,6 +23,9 @@ export default function BiyoraHome() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
+  // Cart visibility state
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   // NEW: Search and Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -172,8 +175,11 @@ export default function BiyoraHome() {
           <div className="flex items-center gap-8">
             <div className="hidden md:block text-sm text-[#d4af37]/70 tracking-widest">KANO, NIGERIA</div>
             
-            {/* Cart Button */}
-            <div className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]">
+            {/* Clickable Cart Button */}
+            <div 
+              onClick={() => setIsCartOpen(!isCartOpen)}
+              className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]"
+            >
               <span className="text-[#d4af37] font-medium text-sm">Cart</span>
               <div className="bg-[#d4af37] text-black text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full px-1.5 transition-all">
                 {cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
@@ -294,51 +300,60 @@ export default function BiyoraHome() {
         )}
       </section>
 
-      {/* Improved Floating Cart */}
-      {cart.length > 0 && (
+      {/* Floating Cart - Now toggleable from header */}
+      {(cart.length > 0 || isCartOpen) && (
         <div className="fixed bottom-6 right-6 bg-zinc-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-sm w-full z-50 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-semibold text-2xl tracking-tight">Your Cart</h3>
-            <span className="text-sm px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] rounded-full transition-all">
-              {cart.length} {cart.length === 1 ? 'item' : 'items'}
-            </span>
+            <button 
+              onClick={() => setIsCartOpen(false)}
+              className="text-[#d4af37]/70 hover:text-white text-xl leading-none"
+            >×</button>
           </h3>
           
-          <div className="max-h-[220px] overflow-auto mb-6 pr-1 space-y-5 text-sm">
-            {cart.map((item) => (
-              <div key={item.id} className="flex justify-between items-start gap-4 transition-all">
-                <div className="flex-1">
-                  <div className="font-medium leading-tight">{item.name}</div>
-                  <div className="text-xs text-[#d4af37]/60 mt-0.5">Quantity: {item.quantity}</div>
-                </div>
-                <div className="font-semibold whitespace-nowrap text-right">
-                  \u20a6{(item.price * item.quantity).toLocaleString()}</div>
+          {cart.length > 0 ? (
+            <>
+              <div className="max-h-[220px] overflow-auto mb-6 pr-1 space-y-5 text-sm">
+                {cart.map((item) => (
+                  <div key={item.id} className="flex justify-between items-start gap-4">
+                    <div className="flex-1">
+                      <div className="font-medium leading-tight">{item.name}</div>
+                      <div className="text-xs text-[#d4af37]/60 mt-0.5">Quantity: {item.quantity}</div>
+                    </div>
+                    <div className="font-semibold whitespace-nowrap text-right">
+                      \u20a6{(item.price * item.quantity).toLocaleString()}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="border-t border-[#d4af37]/20 pt-5 mb-6">
-            <div className="flex justify-between items-baseline text-2xl font-semibold">
-              <span className="text-base font-normal text-[#d4af37]/80">Total</span>
-              <span>\u20a6{totalAmount.toLocaleString()}</span>
+              <div className="border-t border-[#d4af37]/20 pt-5 mb-6">
+                <div className="flex justify-between items-baseline text-2xl font-semibold">
+                  <span className="text-base font-normal text-[#d4af37]/80">Total</span>
+                  <span>\u20a6{totalAmount.toLocaleString()}</span>
+                </div>
+              </div>
+
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email for receipt"
+                className="w-full bg-zinc-950 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-4 mb-4 text-sm placeholder:text-gray-500 focus:outline-none transition-all duration-200"
+              />
+
+              <button
+                onClick={handlePaystackPayment}
+                disabled={isProcessing || isVerifying}
+                className="w-full bg-[#d4af37] hover:bg-white disabled:bg-gray-700 text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all duration-200 active:scale-[0.985]"
+              >
+                {isVerifying ? 'Verifying Payment...' : isProcessing ? 'Processing...' : 'Pay Securely with Paystack'}
+              </button>
+            </>
+          ) : (
+            <div className="py-8 text-center text-gray-400">
+              Your cart is empty
             </div>
-          </div>
-
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email for receipt"
-            className="w-full bg-zinc-950 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-4 mb-4 text-sm placeholder:text-gray-500 focus:outline-none transition-all duration-200"
-          />
-
-          <button
-            onClick={handlePaystackPayment}
-            disabled={isProcessing || isVerifying}
-            className="w-full bg-[#d4af37] hover:bg-white disabled:bg-gray-700 text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all duration-200 active:scale-[0.985]"
-          >
-            {isVerifying ? 'Verifying Payment...' : isProcessing ? 'Processing...' : 'Pay Securely with Paystack'}
-          </button>
+          )}
         </div>
       )}
 
