@@ -1,11 +1,4 @@
-**✅ Here's the latest, fully corrected `README.md`**
-
-Replace the entire content of your `README.md` with this:
-
-```markdown
 # BIYORA – Luxury African Textiles
-
-![Biyora Banner](https://via.placeholder.com/1200x400/d4af37/1a1a1a?text=BIYORA+-+Kano+Luxury+Textiles)
 
 **Premium e-commerce platform for authentic African fabrics from Kano, Nigeria.**
 
@@ -28,7 +21,7 @@ Biyora offers a luxurious shopping experience for high-quality textiles — Anka
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
@@ -132,4 +125,4 @@ MIT License
 
 ---
 
-**⭐ Star the repo if you find it useful
+**⭐ Star the repo if you find it useful**
