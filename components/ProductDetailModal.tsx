@@ -23,11 +23,11 @@ export default function ProductDetailModal({
 
   return (
     <div 
-      className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div 
-        className="modal bg-zinc-900 max-w-5xl w-full rounded-3xl overflow-hidden border border-[#d4af37]/20 shadow-2xl"
+        className="modal bg-zinc-900 max-w-5xl w-full rounded-3xl overflow-hidden border border-[#d4af37]/20 shadow-2xl animate-in zoom-in-95 fade-in duration-300"
         onClick={e => e.stopPropagation()}
       >
         <div className="grid md:grid-cols-2">
