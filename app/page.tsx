@@ -156,40 +156,63 @@ export default function BiyoraHome() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-black/90 border-b border-[#d4af37]/20 backdrop-blur-md">
+      {/* Improved Premium Header */}
+      <header className="sticky top-0 z-50 bg-gray-950/95 border-b border-[#d4af37]/20 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#d4af37] rounded-full flex items-center justify-center text-black font-bold text-xl">B</div>
+          <div className="flex items-center gap-4">
+            <div className="w-11 h-11 bg-[#d4af37] rounded-2xl flex items-center justify-center shadow-lg shadow-[#d4af37]/30">
+              <span className="text-black font-bold text-2xl tracking-[-1px]">B</span>
+            </div>
             <div>
-              <h1 className="text-3xl font-serif tracking-tight">BIYORA</h1>
-              <p className="text-xs text-[#d4af37]/70 -mt-1">Luxury African Textiles • Kano</p>
+              <h1 className="text-3xl font-serif tracking-[-1.5px] text-white">BIYORA</h1>
+              <p className="text-[10px] text-[#d4af37]/70 -mt-1.5 tracking-[2px]">LUXURY TEXTILES</p>
             </div>
           </div>
+
           <div className="flex items-center gap-8">
-            <div className="text-sm opacity-70">Kano, Nigeria</div>
-            <div className="bg-gray-900 px-5 py-2.5 rounded-2xl flex items-center gap-3 border border-[#d4af37]/10">
-              <span className="text-[#d4af37] font-medium">Cart</span>
-              <span className="bg-[#d4af37] text-black text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full">
+            <div className="hidden md:block text-sm text-[#d4af37]/70 tracking-widest">KANO, NIGERIA</div>
+            
+            {/* Cart Button */}
+            <div className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all cursor-pointer">
+              <span className="text-[#d4af37] font-medium text-sm">Cart</span>
+              <div className="bg-[#d4af37] text-black text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full px-1.5">
                 {cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
-              </span>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <div className="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.8px,transparent_1px)] bg-[length:30px_30px] opacity-20"></div>
-        <div className="relative z-10 text-center px-6 max-w-4xl">
-          <h2 className="text-6xl md:text-7xl font-serif mb-6 tracking-tighter">Timeless African Luxury</h2>
-          <p className="text-2xl md:text-3xl text-[#d4af37]/90 mb-8">Premium Textiles from Kano to the World</p>
+      {/* Improved Luxurious Hero Section */}
+      <div className="relative h-[75vh] flex items-center justify-center overflow-hidden bg-black">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.6px,transparent_1px)] bg-[length:28px_28px] opacity-[0.06]"></div>
+        
+        <div className="relative z-10 text-center px-6 max-w-5xl">
+          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37]">
+            EST. 2026 • KANO
+          </div>
+          
+          <h2 className="text-7xl md:text-[92px] leading-[0.9] font-serif tracking-[-4.5px] mb-6">
+            Timeless African<br />Luxury
+          </h2>
+          
+          <p className="text-2xl md:text-3xl text-[#d4af37]/90 mb-10 tracking-tight">
+            Premium textiles from Kano to the world
+          </p>
+
           <button 
             onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-[#d4af37] hover:bg-amber-300 text-black font-semibold px-12 py-5 rounded-2xl text-lg transition-all active:scale-95"
+            className="group bg-[#d4af37] hover:bg-white text-black font-semibold px-14 py-5 rounded-3xl text-lg transition-all active:scale-[0.985] flex items-center gap-3 mx-auto"
           >
-            Shop Collection
+            Shop the Collection
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
           </button>
+        </div>
+
+        {/* Subtle scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px]">
+          SCROLL TO EXPLORE
         </div>
       </div>
 
@@ -198,12 +221,12 @@ export default function BiyoraHome() {
         <div className="flex justify-between items-end mb-12">
           <div>
             <div className="uppercase tracking-[3px] text-sm text-[#d4af37]">Our Collection</div>
-            <h3 className="text-5xl font-serif">Signature Fabrics</h3>
+            <h3 className="text-6xl font-serif tracking-[-1.5px]">Signature Fabrics</h3>
           </div>
-          <div className="text-sm opacity-60">Showing {filteredProducts.length} premium pieces</div>
+          <div className="text-sm text-[#d4af37]/70">Showing {filteredProducts.length} premium pieces</div>
         </div>
 
-        {/* NEW: Search + Category Filters */}
+        {/* Search + Category Filters */}
         <div className="mb-10 flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* Search Input */}
           <div className="relative w-full md:w-96">
@@ -211,21 +234,12 @@ export default function BiyoraHome() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search fabrics (e.g. Ankara, Adire, Gold...)"
-              className="w-full bg-gray-900 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-3.5 pl-12 text-white placeholder:text-gray-500 focus:outline-none transition-all"
+              placeholder="Search fabrics (Ankara, Adire, Brocade...)"
+              className="w-full bg-gray-900 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-3xl px-6 py-4 pl-14 text-white placeholder:text-gray-500 focus:outline-none transition-all text-sm"
             />
-            <div className="absolute left-5 top-4 text-[#d4af37]/70">
+            <div className="absolute left-6 top-[17px] text-[#d4af37]/60 text-lg">
               🔍
             </div>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-5 top-4 text-gray-400 hover:text-white transition-colors"
-                aria-label="Clear search"
-              >
-                ✕
-              </button>
-            )}
           </div>
 
           {/* Category Filter Buttons */}
@@ -234,9 +248,9 @@ export default function BiyoraHome() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-5 py-2.5 rounded-2xl text-sm font-medium transition-all border ${ 
+                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all border ${ 
                   selectedCategory === category 
-                    ? 'bg-[#d4af37] text-black border-[#d4af37]' 
+                    ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20' 
                     : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white'
                 }`}
               >
@@ -246,7 +260,7 @@ export default function BiyoraHome() {
             {(searchQuery || selectedCategory !== 'All') && (
               <button
                 onClick={clearFilters}
-                className="px-4 py-2.5 rounded-2xl text-sm font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-all"
+                className="px-5 py-3 rounded-3xl text-sm font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-all"
               >
                 Clear
               </button>
@@ -267,14 +281,14 @@ export default function BiyoraHome() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <p className="text-2xl text-[#d4af37] mb-2">No fabrics found</p>
-            <p className="text-gray-400">Try adjusting your search or filters</p>
+          <div className="text-center py-20">
+            <p className="text-3xl text-[#d4af37] mb-3">No fabrics found</p>
+            <p className="text-gray-400">Try a different search or filter</p>
             <button 
               onClick={clearFilters}
-              className="mt-6 px-8 py-3 rounded-2xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 transition-all"
+              className="mt-8 px-10 py-4 rounded-3xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 transition-all"
             >
-              Clear filters
+              Clear all filters
             </button>
           </div>
         )}
@@ -282,22 +296,28 @@ export default function BiyoraHome() {
 
       {/* Floating Cart & Checkout */}
       {cart.length > 0 && (
-        <div className="fixed bottom-6 right-6 bg-gray-900 border border-[#d4af37]/30 p-6 rounded-3xl shadow-2xl max-w-xs w-full z-50">
-          <h3 className="font-semibold text-xl mb-4">Your Cart</h3>
+        <div className="fixed bottom-6 right-6 bg-gray-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-xs w-full z-50">
+          <h3 className="font-semibold text-xl mb-5 flex items-center justify-between">
+            Your Cart
+            <span className="text-sm font-normal text-[#d4af37]/70">{cart.length} items</span>
+          </h3>
           
-          <div className="max-h-52 overflow-auto mb-4 space-y-3 text-sm">
+          <div className="max-h-52 overflow-auto mb-5 space-y-4 text-sm pr-1">
             {cart.map((item) => (
-              <div key={item.id} className="flex justify-between">
-                <span>{item.name} ×{item.quantity}</span>
-                <span>₦{(item.price * item.quantity).toLocaleString()}</span>
+              <div key={item.id} className="flex justify-between items-start">
+                <div>
+                  <div>{item.name}</div>
+                  <div className="text-xs text-[#d4af37]/60">Qty: {item.quantity}</div>
+                </div>
+                <div className="font-medium text-right">\u20a6{(item.price * item.quantity).toLocaleString()}</div>
               </div>
             ))}
           </div>
 
-          <div className="border-t border-gray-700 pt-4 mb-4">
-            <div className="flex justify-between text-lg font-medium">
+          <div className="border-t border-gray-700 pt-5 mb-5">
+            <div className="flex justify-between text-xl font-semibold">
               <span>Total</span>
-              <span>₦{totalAmount.toLocaleString()}</span>
+              <span>\u20a6{totalAmount.toLocaleString()}</span>
             </div>
           </div>
 
@@ -305,14 +325,14 @@ export default function BiyoraHome() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Your email for receipt"
-            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:border-[#d4af37]"
+            placeholder="Email for receipt"
+            className="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-3.5 mb-4 focus:outline-none focus:border-[#d4af37] text-sm"
           />
 
           <button
             onClick={handlePaystackPayment}
             disabled={isProcessing || isVerifying}
-            className="w-full bg-[#d4af37] hover:bg-amber-300 disabled:bg-gray-600 text-black font-semibold py-4 rounded-2xl transition-all active:scale-[0.98]"
+            className="w-full bg-[#d4af37] hover:bg-amber-300 disabled:bg-gray-600 text-black font-semibold py-4 rounded-3xl transition-all active:scale-[0.985]"
           >
             {isVerifying ? 'Verifying Payment...' : isProcessing ? 'Processing...' : 'Pay Securely with Paystack'}
           </button>
@@ -330,7 +350,7 @@ export default function BiyoraHome() {
 
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-2xl shadow-2xl z-[100] text-sm font-medium
+        <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-3xl shadow-2xl z-[100] text-sm font-medium
           ${toast.type === 'success' ? 'bg-green-600' : toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`}>
           {toast.message}
         </div>
