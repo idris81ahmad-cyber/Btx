@@ -23,6 +23,13 @@ export default function BiyoraHome() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
+  // NEW: Search and Filter state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Available categories
+  const categories = ['All', 'Ankara', 'Adire', 'Brocade', 'Silk', 'Lace'];
+
   // Auto-dismiss toast
   useEffect(() => {
     if (toast) {
@@ -32,6 +39,18 @@ export default function BiyoraHome() {
   }, [toast]);
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  // NEW: Filtered products based on search + category
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesCategory =
+      selectedCategory === 'All' || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
 
   const handlePaystackPayment = async () => {
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -123,9 +142,16 @@ export default function BiyoraHome() {
     } catch (error) {
       console.error("Paystack initialization error:", error);
       setToast({ message: "Failed to initialize payment. Please try again.", type: "error" });
+      setIsVerifying(false);
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  // NEW: Clear all filters
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('All');
   };
 
   return (
@@ -174,19 +200,84 @@ export default function BiyoraHome() {
             <div className="uppercase tracking-[3px] text-sm text-[#d4af37]">Our Collection</div>
             <h3 className="text-5xl font-serif">Signature Fabrics</h3>
           </div>
-          <div className="text-sm opacity-60">Showing {products.length} premium pieces</div>
+          <div className="text-sm opacity-60">Showing {filteredProducts.length} premium pieces</div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={addToCart}
-              onViewDetails={setSelectedProduct}
+        {/* NEW: Search + Category Filters */}
+        <div className="mb-10 flex flex-col md:flex-row gap-4 items-center justify-between">
+          {/* Search Input */}
+          <div className="relative w-full md:w-96">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search fabrics (e.g. Ankara, Adire, Gold...)"
+              className="w-full bg-gray-900 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-3.5 pl-12 text-white placeholder:text-gray-500 focus:outline-none transition-all"
             />
-          ))}
+            <div className="absolute left-5 top-4 text-[#d4af37]/70">
+              🔍
+            </div>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-5 top-4 text-gray-400 hover:text-white transition-colors"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Category Filter Buttons */}
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-5 py-2.5 rounded-2xl text-sm font-medium transition-all border ${ 
+                  selectedCategory === category 
+                    ? 'bg-[#d4af37] text-black border-[#d4af37]' 
+                    : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+            {(searchQuery || selectedCategory !== 'All') && (
+              <button
+                onClick={clearFilters}
+                className="px-4 py-2.5 rounded-2xl text-sm font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-all"
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Products Grid */}
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={addToCart}
+                onViewDetails={setSelectedProduct}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-2xl text-[#d4af37] mb-2">No fabrics found</p>
+            <p className="text-gray-400">Try adjusting your search or filters</p>
+            <button 
+              onClick={clearFilters}
+              className="mt-6 px-8 py-3 rounded-2xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 transition-all"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Floating Cart & Checkout */}
