@@ -4,7 +4,9 @@
 
 Biyora offers a luxurious shopping experience for high-quality textiles — Ankara, Adire, Guinea Brocade, Silk Velvet and more — with secure Paystack payments and modern design.
 
-**Live Demo:** *(Add your Vercel link after deployment)*
+## 🚀 Live Demo
+
+**https://btx-wwqj.vercel.app/**
 
 ---
 
@@ -25,7 +27,7 @@ Biyora offers a luxurious shopping experience for high-quality textiles — Anka
 
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS v4
 - **State Management**: Zustand
 - **Payments**: Paystack
 - **Deployment**: Vercel
