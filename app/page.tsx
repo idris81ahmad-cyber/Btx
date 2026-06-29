@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useCartStore } from '@/lib/cartStore';
 import { products } from '@/data/products';
-import ProductCard from '@/components/ProductCard';
 import { useRouter } from 'next/navigation';
 
 export default function Biyora() {
@@ -62,12 +61,22 @@ export default function Biyora() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map(product => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              onAddToCart={addToCart} 
-              onViewDetails={() => {}}
-            />
+            <div key={product.id} className="bg-zinc-900 rounded-3xl p-6">
+              <div className="h-64 bg-zinc-800 rounded-2xl mb-4 flex items-center justify-center text-[#d4af37]/50">
+                Image
+              </div>
+              <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+              <p className="text-sm text-gray-400 mb-4">{product.description}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-2xl font-semibold">₦{product.price.toLocaleString()}</span>
+                <button 
+                  onClick={() => addToCart(product)}
+                  className="bg-[#d4af37] text-black px-6 py-2 rounded-2xl text-sm font-semibold"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       </section>
