@@ -23,9 +23,6 @@ export default function BiyoraHome() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // Cart visibility state
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
   // NEW: Search and Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -178,8 +175,7 @@ export default function BiyoraHome() {
             {/* Clickable Cart Button */}
             <div 
               onClick={() => setIsCartOpen(!isCartOpen)}
-              className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]"
-            >
+              className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]">
               <span className="text-[#d4af37] font-medium text-sm">Cart</span>
               <div className="bg-[#d4af37] text-black text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full px-1.5 transition-all">
                 {cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
@@ -189,11 +185,17 @@ export default function BiyoraHome() {
         </div>
       </header>
 
-      {/* Improved Luxurious Hero Section */}
-      <div className="relative h-[75vh] flex items-center justify-center overflow-hidden bg-black">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.6px,transparent_1px)] bg-[length:28px_28px] opacity-[0.06]"></div>
+      {/* Luxurious Hero Background */}
+      <div className="relative h-[78vh] flex items-center justify-center overflow-hidden">
+        {/* Deep luxurious dark gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-950 to-black"></div>
         
+        {/* Subtle warm gold radial pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.7px,transparent_1.2px)] bg-[length:32px_32px] opacity-[0.07]"></div>
+        
+        {/* Very subtle second layer for depth */}
+        <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.4px,transparent_1px)] bg-[length:18px_18px] opacity-[0.035]"></div>
+
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37] transition-all">
             EST. 2026 • KANO
