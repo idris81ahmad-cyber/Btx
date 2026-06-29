@@ -1,26 +1,43 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useCartStore } from '@/lib/cartStore';
-import { products } from '@/data/products';
 import { useRouter } from 'next/navigation';
 
-export default function Biyora() {
-  const { cart, addToCart, clearCart } = useCartStore();
-  const router = useRouter();
+const products = [
+  { id: 1, name: "Premium Ankara Print Set", price: 18500, description: "Vibrant premium quality Ankara fabric." },
+  { id: 2, name: "Luxury Adire Batik", price: 24500, description: "Handcrafted Adire fabric with traditional patterns." },
+  { id: 3, name: "Guinea Brocade Gold Embroidery", price: 32500, description: "Exquisite Guinea Brocade with rich gold embroidery." },
+];
 
+export default function Biyora() {
+  const router = useRouter();
+  const [cart, setCart] = useState([]);
   const [email, setEmail] = useState('');
   const [toast, setToast] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+  const addToCart = (product) => {
+    setCart(prev => {
+      const existing = prev.find(item => item.id === product.id);
+      if (existing) {
+        return prev.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+    });
+    setIsCartOpen(true);
+  };
+
   const handlePay = () => {
     if (!email) {
       setToast({ message: 'Please enter your email', type: 'error' });
       return;
     }
-    clearCart();
+    setCart([]);
     router.push(`/success?reference=test&amount=${total}`);
   };
 
