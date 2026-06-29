@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { type Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -17,12 +16,10 @@ export default function ProductCard({
   return (
     <div className="group bg-zinc-900 rounded-3xl overflow-hidden border border-[#d4af37]/10 hover:border-[#d4af37]/40 transition-all duration-500 hover:shadow-2xl hover:shadow-[#d4af37]/10">
       <div className="relative h-80 overflow-hidden cursor-pointer" onClick={() => onViewDetails(product)}>
-        <Image
+        <img
           src={product.image}
           alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-700"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div className="absolute top-4 right-4 bg-black/70 px-3 py-1 rounded-full text-xs tracking-widest">
           {product.category}
@@ -35,7 +32,7 @@ export default function ProductCard({
 
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-3xl font-medium">₦{product.price.toLocaleString()}</span>
+            <span className="text-3xl font-medium">\u20a6{product.price.toLocaleString()}</span>
           </div>
 
           <button

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { Product } from '@/data/products';
 
 interface ProductDetailModalProps {
@@ -28,12 +27,10 @@ export default function ProductDetailModal({
         <div className="grid md:grid-cols-2 gap-0">
           {/* Image Side */}
           <div className="relative aspect-square md:aspect-auto">
-            <Image
+            <img
               src={product.image}
               alt={product.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className="w-full h-full object-cover"
             />
           </div>
 
@@ -51,7 +48,7 @@ export default function ProductDetailModal({
             
             <h2 className="text-4xl font-serif leading-tight mb-6">{product.name}</h2>
 
-            <div className="text-4xl font-semibold mb-8">₦{product.price.toLocaleString()}</div>
+            <div className="text-4xl font-semibold mb-8">\u20a6{product.price.toLocaleString()}</div>
 
             <div className="space-y-6 mb-10">
               <div>
