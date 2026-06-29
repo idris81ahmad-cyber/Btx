@@ -1,6 +1,5 @@
 "use client";
 
-import Image from 'next/image';
 import { type Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -21,12 +20,10 @@ export default function ProductCard({
     >
       {/* Image Container */}
       <div className="relative h-80 overflow-hidden">
-        <Image
+        <img
           src={product.image}
           alt={product.name}
-          fill
-          className="object-cover transition-all duration-700 group-hover:scale-[1.08]"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.08]"
         />
         
         {/* Category Badge */}
