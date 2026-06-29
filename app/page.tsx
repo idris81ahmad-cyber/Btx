@@ -160,12 +160,15 @@ export default function BiyoraHome() {
       <header className="sticky top-0 z-50 bg-gray-950/95 border-b border-[#d4af37]/20 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <div className="w-11 h-11 bg-[#d4af37] rounded-2xl flex items-center justify-center shadow-lg shadow-[#d4af37]/30">
-              <span className="text-black font-bold text-2xl tracking-[-1px]">B</span>
-            </div>
-            <div>
-              <h1 className="text-3xl font-serif tracking-[-1.5px] text-white">BIYORA</h1>
-              <p className="text-[10px] text-[#d4af37]/70 -mt-1.5 tracking-[2px]">LUXURY TEXTILES</p>
+            {/* Improved Logo */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-[#d4af37] rounded-2xl flex items-center justify-center shadow-md shadow-[#d4af37]/40 ring-1 ring-[#d4af37]/30">
+                <span className="text-black font-serif font-bold text-[26px] tracking-[-1.5px] leading-none mt-[-1px]">B</span>
+              </div>
+              <div>
+                <h1 className="text-[28px] font-serif tracking-[-1.2px] text-white leading-none">BIYORA</h1>
+                <p className="text-[9px] text-[#d4af37]/70 -mt-0.5 tracking-[2.5px]">LUXURY TEXTILES</p>
+              </div>
             </div>
           </div>
 

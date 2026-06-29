@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   description: 'Premium African fabrics and textiles from Kano. Shop authentic Ankara, Adire, Silk, Guinea Brocade and more.',
   keywords: ['African textiles', 'Kano fabrics', 'Ankara', 'Adire', 'Guinea Brocade', 'luxury fashion', 'Biyora'],
   authors: [{ name: 'Idris Ahmad' }],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: 'BIYORA - Luxury African Textiles | Kano',
     description: 'Premium textiles from Kano to the world',
