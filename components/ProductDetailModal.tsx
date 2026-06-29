@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { Product } from '@/data/products';
 
 interface ProductDetailModalProps {
@@ -33,10 +34,12 @@ export default function ProductDetailModal({
         <div className="grid md:grid-cols-2">
           {/* Image Side */}
           <div className="relative bg-black flex items-center justify-center p-8 md:p-12">
-            <img
+            <Image
               src={product.image}
               alt={product.name}
-              className="w-full h-full object-contain rounded-2xl"
+              fill
+              className="object-contain rounded-2xl"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
 
