@@ -23,7 +23,7 @@ export default function BiyoraHome() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
-  // Cart visibility state (was missing)
+  // Cart visibility state
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // NEW: Search and Filter state
