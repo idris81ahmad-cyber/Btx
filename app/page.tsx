@@ -171,6 +171,7 @@ export default function BiyoraHome() {
           <div className="flex items-center gap-8">
             <div className="hidden md:block text-sm text-[#d4af37]/70 tracking-widest">KANO, NIGERIA</div>
 
+            {/* Clickable Cart Button */}
             <div
               onClick={() => setIsCartOpen(!isCartOpen)}
               className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]"
@@ -184,14 +185,14 @@ export default function BiyoraHome() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero Section */}
       <div className="relative h-[78vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-950 to-black"></div>
         <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.7px,transparent_1.2px)] bg-[length:32px_32px] opacity-[0.07]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.4px,transparent_1px)] bg-[length:18px_18px] opacity-[0.035]"></div>
 
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37]">
+          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37] transition-all">
             EST. 2026 • KANO
           </div>
 
@@ -212,7 +213,7 @@ export default function BiyoraHome() {
           </button>
         </div>
 
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px]">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px] transition-opacity hover:opacity-100">
           SCROLL TO EXPLORE
         </div>
       </div>
@@ -245,10 +246,9 @@ export default function BiyoraHome() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all duration-200 border active:scale-[0.985] ${
-                  selectedCategory === category
-                    ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
-                    : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white hover:bg-white/5'
+                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all duration-200 border active:scale-[0.985] ${selectedCategory === category
+                  ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
+                  : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white hover:bg-white/5'
                 }`}
               >
                 {category}
@@ -265,7 +265,7 @@ export default function BiyoraHome() {
           </div>
         </div>
 
-        {/* Product Grid */}
+        {/* Products Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
@@ -309,7 +309,7 @@ export default function BiyoraHome() {
                       <div className="text-xs text-[#d4af37]/60 mt-0.5">Quantity: {item.quantity}</div>
                     </div>
                     <div className="font-semibold whitespace-nowrap text-right">
-                      ₦{(item.price * item.quantity).toLocaleString()}
+                      \u20a6{(item.price * item.quantity).toLocaleString()}
                     </div>
                   </div>
                 ))}
@@ -318,7 +318,7 @@ export default function BiyoraHome() {
               <div className="border-t border-[#d4af37]/20 pt-5 mb-6">
                 <div className="flex justify-between items-baseline text-2xl font-semibold">
                   <span className="text-base font-normal text-[#d4af37]/80">Total</span>
-                  <span>₦{totalAmount.toLocaleString()}</span>
+                  <span>\u20a6{totalAmount.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -344,7 +344,7 @@ export default function BiyoraHome() {
         </div>
       )}
 
-      {/* Product Modal */}
+      {/* Product Detail Modal */}
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
