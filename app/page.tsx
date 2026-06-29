@@ -195,7 +195,7 @@ export default function BiyoraHome() {
         </div>
       </div>
 
-      {/* Products */}
+      {/* Products Section */}
       <section id="products" className="max-w-7xl mx-auto px-6 py-20">
         <div className="flex justify-between items-end mb-12">
           <div>
