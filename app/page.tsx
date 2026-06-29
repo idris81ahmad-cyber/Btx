@@ -4,14 +4,12 @@ import React, { useState } from 'react';
 import { useCartStore } from '@/lib/cartStore';
 import { products } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
-import ProductDetailModal from '@/components/ProductDetailModal';
 import { useRouter } from 'next/navigation';
 
 export default function Biyora() {
   const { cart, addToCart, clearCart } = useCartStore();
   const router = useRouter();
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [email, setEmail] = useState('');
   const [toast, setToast] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -68,7 +66,7 @@ export default function Biyora() {
               key={product.id} 
               product={product} 
               onAddToCart={addToCart} 
-              onViewDetails={setSelectedProduct} 
+              onViewDetails={() => {}}
             />
           ))}
         </div>
@@ -105,19 +103,11 @@ export default function Biyora() {
 
           <button 
             onClick={handlePay}
-            className="w-full bg-[#d4af37] text-black py-3.5 rounded-3xl font-semibold"
+            className="w-full bg-[#d4af37] text-black font-semibold py-3.5 rounded-3xl font-semibold"
           >
             Pay with Paystack
           </button>
         </div>
-      )}
-
-      {selectedProduct && (
-        <ProductDetailModal 
-          product={selectedProduct} 
-          onClose={() => setSelectedProduct(null)} 
-          onAddToCart={addToCart} 
-        />
       )}
 
       {toast && (
