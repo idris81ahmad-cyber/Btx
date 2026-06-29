@@ -294,29 +294,33 @@ export default function BiyoraHome() {
         )}
       </section>
 
-      {/* Floating Cart & Checkout */}
+      {/* Improved Floating Cart */}
       {cart.length > 0 && (
-        <div className="fixed bottom-6 right-6 bg-gray-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-xs w-full z-50">
-          <h3 className="font-semibold text-xl mb-5 flex items-center justify-between">
-            Your Cart
-            <span className="text-sm font-normal text-[#d4af37]/70">{cart.length} items</span>
+        <div className="fixed bottom-6 right-6 bg-zinc-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-sm w-full z-50">
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="font-semibold text-2xl tracking-tight">Your Cart</h3>
+            <span className="text-sm px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] rounded-full">
+              {cart.length} {cart.length === 1 ? 'item' : 'items'}
+            </span>
           </h3>
           
-          <div className="max-h-52 overflow-auto mb-5 space-y-4 text-sm pr-1">
+          <div className="max-h-[220px] overflow-auto mb-6 pr-1 space-y-5 text-sm">
             {cart.map((item) => (
-              <div key={item.id} className="flex justify-between items-start">
-                <div>
-                  <div>{item.name}</div>
-                  <div className="text-xs text-[#d4af37]/60">Qty: {item.quantity}</div>
+              <div key={item.id} className="flex justify-between items-start gap-4">
+                <div className="flex-1">
+                  <div className="font-medium leading-tight">{item.name}</div>
+                  <div className="text-xs text-[#d4af37]/60 mt-0.5">Quantity: {item.quantity}</div>
                 </div>
-                <div className="font-medium text-right">\u20a6{(item.price * item.quantity).toLocaleString()}</div>
+                <div className="font-semibold whitespace-nowrap text-right">
+                  \u20a6{(item.price * item.quantity).toLocaleString()}
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="border-t border-gray-700 pt-5 mb-5">
-            <div className="flex justify-between text-xl font-semibold">
-              <span>Total</span>
+          <div className="border-t border-[#d4af37]/20 pt-5 mb-6">
+            <div className="flex justify-between items-baseline text-2xl font-semibold">
+              <span className="text-base font-normal text-[#d4af37]/80">Total</span>
               <span>\u20a6{totalAmount.toLocaleString()}</span>
             </div>
           </div>
@@ -325,14 +329,14 @@ export default function BiyoraHome() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email for receipt"
-            className="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-3.5 mb-4 focus:outline-none focus:border-[#d4af37] text-sm"
+            placeholder="Your email for receipt"
+            className="w-full bg-zinc-950 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-2xl px-5 py-4 mb-4 text-sm placeholder:text-gray-500 focus:outline-none transition-all"
           />
 
           <button
             onClick={handlePaystackPayment}
             disabled={isProcessing || isVerifying}
-            className="w-full bg-[#d4af37] hover:bg-amber-300 disabled:bg-gray-600 text-black font-semibold py-4 rounded-3xl transition-all active:scale-[0.985]"
+            className="w-full bg-[#d4af37] hover:bg-white disabled:bg-gray-700 text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all active:scale-[0.985]"
           >
             {isVerifying ? 'Verifying Payment...' : isProcessing ? 'Processing...' : 'Pay Securely with Paystack'}
           </button>
