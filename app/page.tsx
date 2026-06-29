@@ -87,6 +87,7 @@ export default function BiyoraHome() {
         ...config,
         onSuccess: async (transaction: any) => {
           setIsVerifying(true);
+          setToast({ message: "Verifying payment...", type: "info" });
 
           try {
             const verifyRes = await fetch('/api/verify-payment', {
@@ -110,11 +111,18 @@ export default function BiyoraHome() {
             setIsVerifying(false);
           }
         },
-        onCancel: () => setToast({ message: "Payment cancelled", type: "info" }),
-        onError: () => setToast({ message: "Payment error", type: "error" }),
+        onCancel: () => {
+          setToast({ message: "Payment cancelled", type: "info" });
+          setIsVerifying(false);
+        },
+        onError: () => {
+          setToast({ message: "Payment failed", type: "error" });
+          setIsVerifying(false);
+        }
       });
     } catch (error) {
-      setToast({ message: "Failed to start payment", type: "error" });
+      setToast({ message: "Could not start payment", type: "error" });
+      setIsVerifying(false);
     } finally {
       setIsProcessing(false);
     }
@@ -127,6 +135,7 @@ export default function BiyoraHome() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
+      {/* Header */}
       <header className="sticky top-0 z-50 bg-gray-950/95 border-b border-[#d4af37]/20 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -155,6 +164,7 @@ export default function BiyoraHome() {
         </div>
       </header>
 
+      {/* Hero */}
       <div className="relative h-[75vh] flex items-center justify-center overflow-hidden bg-black">
         <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.6px,transparent_1px)] bg-[length:28px_28px] opacity-[0.06]"></div>
 
@@ -185,6 +195,7 @@ export default function BiyoraHome() {
         </div>
       </div>
 
+      {/* Products */}
       <section id="products" className="max-w-7xl mx-auto px-6 py-20">
         <div className="flex justify-between items-end mb-12">
           <div>
@@ -194,6 +205,7 @@ export default function BiyoraHome() {
           <div className="text-sm text-[#d4af37]/70">Showing {filteredProducts.length} pieces</div>
         </div>
 
+        {/* Search + Filters */}
         <div className="mb-10 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
             <input
@@ -230,6 +242,7 @@ export default function BiyoraHome() {
           </div>
         </div>
 
+        {/* Product Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
@@ -251,6 +264,7 @@ export default function BiyoraHome() {
         )}
       </section>
 
+      {/* Floating Cart */}
       {(cart.length > 0 || isCartOpen) && (
         <div className="fixed bottom-6 right-6 bg-zinc-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-sm w-full z-50">
           <div className="flex justify-between items-center mb-6">
@@ -301,6 +315,7 @@ export default function BiyoraHome() {
         </div>
       )}
 
+      {/* Product Detail Modal */}
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
@@ -309,6 +324,7 @@ export default function BiyoraHome() {
         />
       )}
 
+      {/* Toast */}
       {toast && (
         <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-3xl shadow-2xl z-[100] text-sm font-medium
           ${toast.type === 'success' ? 'bg-green-600' : toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`}>
