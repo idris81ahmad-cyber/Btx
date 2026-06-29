@@ -16,21 +16,18 @@ interface Toast {
 export default function BiyoraHome() {
   const { cart, addToCart, clearCart } = useCartStore();
   const router = useRouter();
-  
+
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [email, setEmail] = useState('');
   const [toast, setToast] = useState<Toast | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
-
-  // Cart visibility state
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // NEW: Search and Filter state
+  // Search and Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Available categories
   const categories = ['All', 'Ankara', 'Adire', 'Brocade', 'Silk', 'Lace'];
 
   // Auto-dismiss toast
@@ -43,7 +40,7 @@ export default function BiyoraHome() {
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  // NEW: Filtered products based on search + category
+  // Filtered products
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -86,10 +83,10 @@ export default function BiyoraHome() {
       publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
       metadata: {
         custom_fields: [
-          { 
-            display_name: "Cart Items", 
-            variable_name: "cart_items", 
-            value: JSON.stringify(cart) 
+          {
+            display_name: "Cart Items",
+            variable_name: "cart_items",
+            value: JSON.stringify(cart)
           }
         ]
       }
@@ -97,7 +94,7 @@ export default function BiyoraHome() {
 
     try {
       const paystack = new (window as any).PaystackPop();
-      
+
       paystack.newTransaction({
         ...config,
         onSuccess: async (transaction: any) => {
@@ -118,16 +115,16 @@ export default function BiyoraHome() {
               setEmail('');
               router.push(`/success?reference=${transaction.reference}&amount=${totalAmount}`);
             } else {
-              setToast({ 
-                message: `Payment received but verification failed. Contact support with reference: ${transaction.reference}`, 
-                type: "error" 
+              setToast({
+                message: `Payment received but verification failed. Contact support with reference: ${transaction.reference}`,
+                type: "error"
               });
             }
           } catch (error) {
             console.error("Verification error:", error);
-            setToast({ 
-              message: `Payment successful but verification failed due to network issue. Please save this reference and contact support: ${transaction.reference}`, 
-              type: "error" 
+            setToast({
+              message: `Payment successful but verification failed due to network issue. Please save this reference and contact support: ${transaction.reference}`,
+              type: "error"
             });
           } finally {
             setIsVerifying(false);
@@ -151,7 +148,6 @@ export default function BiyoraHome() {
     }
   };
 
-  // NEW: Clear all filters
   const clearFilters = () => {
     setSearchQuery('');
     setSelectedCategory('All');
@@ -159,29 +155,26 @@ export default function BiyoraHome() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
-      {/* Improved Premium Header */}
+      {/* Header */}
       <header className="sticky top-0 z-50 bg-gray-950/95 border-b border-[#d4af37]/20 backdrop-blur-lg">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            {/* Improved Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#d4af37] rounded-2xl flex items-center justify-center shadow-md shadow-[#d4af37]/40 ring-1 ring-[#d4af37]/30">
-                <span className="text-black font-serif font-bold text-[26px] tracking-[-1.5px] leading-none mt-[-1px]">B</span>
-              </div>
-              <div>
-                <h1 className="text-[28px] font-serif tracking-[-1.2px] text-white leading-none">BIYORA</h1>
-                <p className="text-[9px] text-[#d4af37]/70 -mt-0.5 tracking-[2.5px]">LUXURY TEXTILES</p>
-              </div>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#d4af37] rounded-2xl flex items-center justify-center shadow-md shadow-[#d4af37]/40 ring-1 ring-[#d4af37]/30">
+              <span className="text-black font-serif font-bold text-[26px] tracking-[-1.5px] leading-none mt-[-1px]">B</span>
+            </div>
+            <div>
+              <h1 className="text-[28px] font-serif tracking-[-1.2px] text-white leading-none">BIYORA</h1>
+              <p className="text-[9px] text-[#d4af37]/70 -mt-0.5 tracking-[2.5px]">LUXURY TEXTILES</p>
             </div>
           </div>
 
           <div className="flex items-center gap-8">
             <div className="hidden md:block text-sm text-[#d4af37]/70 tracking-widest">KANO, NIGERIA</div>
-            
-            {/* Clickable Cart Button */}
-            <div 
+
+            <div
               onClick={() => setIsCartOpen(!isCartOpen)}
-              className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]">
+              className="bg-gray-900 border border-[#d4af37]/30 px-5 py-2.5 rounded-2xl flex items-center gap-3 hover:border-[#d4af37]/60 transition-all duration-200 cursor-pointer active:scale-[0.985]"
+            >
               <span className="text-[#d4af37] font-medium text-sm">Cart</span>
               <div className="bg-[#d4af37] text-black text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full px-1.5 transition-all">
                 {cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}
@@ -191,31 +184,26 @@ export default function BiyoraHome() {
         </div>
       </header>
 
-      {/* Luxurious Hero Background */}
+      {/* Hero */}
       <div className="relative h-[78vh] flex items-center justify-center overflow-hidden">
-        {/* Deep luxurious dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-zinc-950 to-black"></div>
-        
-        {/* Subtle warm gold radial pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.7px,transparent_1.2px)] bg-[length:32px_32px] opacity-[0.07]"></div>
-        
-        {/* Very subtle second layer for depth */}
         <div className="absolute inset-0 bg-[radial-gradient(#d4af37_0.4px,transparent_1px)] bg-[length:18px_18px] opacity-[0.035]"></div>
 
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37] transition-all">
+          <div className="inline-block mb-4 px-4 py-1 rounded-full border border-[#d4af37]/30 text-xs tracking-[3px] text-[#d4af37]">
             EST. 2026 • KANO
           </div>
-          
+
           <h2 className="text-7xl md:text-[92px] leading-[0.9] font-serif tracking-[-4.5px] mb-6">
             Timeless African<br />Luxury
           </h2>
-          
+
           <p className="text-2xl md:text-3xl text-[#d4af37]/90 mb-10 tracking-tight">
             Premium textiles from Kano to the world
           </p>
 
-          <button 
+          <button
             onClick={() => document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' })}
             className="group bg-[#d4af37] hover:bg-white text-black font-semibold px-14 py-5 rounded-3xl text-lg transition-all duration-200 active:scale-[0.985] flex items-center gap-3 mx-auto"
           >
@@ -224,13 +212,12 @@ export default function BiyoraHome() {
           </button>
         </div>
 
-        {/* Subtle scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px] transition-opacity hover:opacity-100">
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37]/50 text-xs tracking-[3px]">
           SCROLL TO EXPLORE
         </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Products Section */}
       <section id="products" className="max-w-7xl mx-auto px-6 py-20">
         <div className="flex justify-between items-end mb-12">
           <div>
@@ -240,9 +227,8 @@ export default function BiyoraHome() {
           <div className="text-sm text-[#d4af37]/70">Showing {filteredProducts.length} premium pieces</div>
         </div>
 
-        {/* Search + Category Filters */}
+        {/* Search + Filters */}
         <div className="mb-10 flex flex-col md:flex-row gap-4 items-center justify-between">
-          {/* Search Input */}
           <div className="relative w-full md:w-96">
             <input
               type="text"
@@ -251,20 +237,17 @@ export default function BiyoraHome() {
               placeholder="Search fabrics (Ankara, Adire, Brocade...)"
               className="w-full bg-gray-900 border border-[#d4af37]/30 focus:border-[#d4af37] rounded-3xl px-6 py-4 pl-14 text-white placeholder:text-gray-500 focus:outline-none transition-all text-sm"
             />
-            <div className="absolute left-6 top-[17px] text-[#d4af37]/60 text-lg">
-              🔍
-            </div>
+            <div className="absolute left-6 top-[17px] text-[#d4af37]/60 text-lg">🔍</div>
           </div>
 
-          {/* Category Filter Buttons */}
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all duration-200 border active:scale-[0.985] ${ 
-                  selectedCategory === category 
-                    ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20' 
+                className={`px-6 py-3 rounded-3xl text-sm font-medium transition-all duration-200 border active:scale-[0.985] ${
+                  selectedCategory === category
+                    ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
                     : 'bg-gray-900 border-[#d4af37]/30 hover:border-[#d4af37]/60 text-white hover:bg-white/5'
                 }`}
               >
@@ -282,7 +265,7 @@ export default function BiyoraHome() {
           </div>
         </div>
 
-        {/* Products Grid */}
+        {/* Product Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
@@ -298,7 +281,7 @@ export default function BiyoraHome() {
           <div className="text-center py-20">
             <p className="text-3xl text-[#d4af37] mb-3">No fabrics found</p>
             <p className="text-gray-400">Try a different search or filter</p>
-            <button 
+            <button
               onClick={clearFilters}
               className="mt-8 px-10 py-4 rounded-3xl border border-[#d4af37]/40 hover:bg-[#d4af37]/10 active:scale-[0.985] transition-all duration-200"
             >
@@ -308,17 +291,14 @@ export default function BiyoraHome() {
         )}
       </section>
 
-      {/* Floating Cart - Now toggleable from header */}
+      {/* Floating Cart */}
       {(cart.length > 0 || isCartOpen) && (
         <div className="fixed bottom-6 right-6 bg-zinc-900 border border-[#d4af37]/30 p-7 rounded-3xl shadow-2xl max-w-sm w-full z-50 transition-all duration-300">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-semibold text-2xl tracking-tight">Your Cart</h3>
-            <button 
-              onClick={() => setIsCartOpen(false)}
-              className="text-[#d4af37]/70 hover:text-white text-xl leading-none"
-            >×</button>
+            <button onClick={() => setIsCartOpen(false)} className="text-[#d4af37]/70 hover:text-white text-xl leading-none">×</button>
           </h3>
-          
+
           {cart.length > 0 ? (
             <>
               <div className="max-h-[220px] overflow-auto mb-6 pr-1 space-y-5 text-sm">
@@ -329,7 +309,8 @@ export default function BiyoraHome() {
                       <div className="text-xs text-[#d4af37]/60 mt-0.5">Quantity: {item.quantity}</div>
                     </div>
                     <div className="font-semibold whitespace-nowrap text-right">
-                      \u20a6{(item.price * item.quantity).toLocaleString()}</div>
+                      ₦{(item.price * item.quantity).toLocaleString()}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -337,7 +318,7 @@ export default function BiyoraHome() {
               <div className="border-t border-[#d4af37]/20 pt-5 mb-6">
                 <div className="flex justify-between items-baseline text-2xl font-semibold">
                   <span className="text-base font-normal text-[#d4af37]/80">Total</span>
-                  <span>\u20a6{totalAmount.toLocaleString()}</span>
+                  <span>₦{totalAmount.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -358,14 +339,12 @@ export default function BiyoraHome() {
               </button>
             </>
           ) : (
-            <div className="py-8 text-center text-gray-400">
-              Your cart is empty
-            </div>
+            <div className="py-8 text-center text-gray-400">Your cart is empty</div>
           )}
         </div>
       )}
 
-      {/* Product Detail Modal */}
+      {/* Product Modal */}
       {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
@@ -374,7 +353,7 @@ export default function BiyoraHome() {
         />
       )}
 
-      {/* Toast Notification */}
+      {/* Toast */}
       {toast && (
         <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-3xl shadow-2xl z-[100] text-sm font-medium transition-all duration-300
           ${toast.type === 'success' ? 'bg-green-600' : toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`}>
