@@ -14,25 +14,44 @@ export default function ProductCard({
   onViewDetails 
 }: ProductCardProps) {
   return (
-    <div className="group bg-zinc-900 rounded-3xl overflow-hidden border border-[#d4af37]/10 hover:border-[#d4af37]/40 transition-all duration-500 hover:shadow-2xl hover:shadow-[#d4af37]/10">
-      <div className="relative h-80 overflow-hidden cursor-pointer" onClick={() => onViewDetails(product)}>
+    <div 
+      onClick={() => onViewDetails(product)}
+      className="group bg-zinc-900 rounded-3xl overflow-hidden border border-[#d4af37]/10 hover:border-[#d4af37]/50 transition-all duration-500 hover:shadow-2xl hover:shadow-[#d4af37]/10 cursor-pointer"
+    >
+      {/* Image Container */}
+      <div className="relative h-80 overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.08]"
         />
-        <div className="absolute top-4 right-4 bg-black/70 px-3 py-1 rounded-full text-xs tracking-widest">
+        
+        {/* Category Badge */}
+        <div className="absolute top-5 right-5 bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full text-xs tracking-[2px] border border-[#d4af37]/30">
           {product.category}
         </div>
+
+        {/* Subtle gradient overlay at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
       </div>
 
-      <div className="p-8">
-        <h3 className="text-2xl font-semibold mb-3 line-clamp-2">{product.name}</h3>
-        <p className="text-sm opacity-70 line-clamp-3 mb-6">{product.description}</p>
+      {/* Content */}
+      <div className="p-7">
+        <div className="mb-4">
+          <h3 className="text-[21px] font-semibold tracking-[-0.4px] leading-tight mb-2 group-hover:text-[#d4af37] transition-colors">
+            {product.name}
+          </h3>
+          <p className="text-sm text-gray-400 line-clamp-2 leading-relaxed">
+            {product.description}
+          </p>
+        </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-end justify-between pt-4 border-t border-[#d4af37]/10">
           <div>
-            <span className="text-3xl font-medium">\u20a6{product.price.toLocaleString()}</span>
+            <div className="text-xs text-[#d4af37]/70 tracking-widest mb-0.5">FROM</div>
+            <div className="text-3xl font-semibold tracking-tighter">
+              \u20a6{product.price.toLocaleString()}
+            </div>
           </div>
 
           <button
@@ -40,7 +59,7 @@ export default function ProductCard({
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="bg-[#d4af37] hover:bg-amber-300 text-black font-medium px-8 py-3.5 rounded-2xl transition-all active:scale-95 text-sm tracking-wider"
+            className="bg-[#d4af37] hover:bg-white active:bg-amber-300 text-black font-semibold px-7 py-3.5 rounded-2xl text-sm transition-all active:scale-[0.985]"
           >
             Add to Cart
           </button>
