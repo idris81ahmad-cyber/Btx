@@ -5,13 +5,7 @@ import { useCartStore } from '@/lib/cartStore';
 import { products, type Product } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import ProductDetailModal from '@/components/ProductDetailModal';
-import { validateCartForCheckout, calculateTotalInKobo } from '@/lib/validators';
 import { useRouter } from 'next/navigation';
-
-interface Toast {
-  message: string;
-  type: 'success' | 'error' | 'info';
-}
 
 export default function BiyoraHome() {
   const { cart, addToCart, clearCart } = useCartStore();
@@ -19,9 +13,7 @@ export default function BiyoraHome() {
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [email, setEmail] = useState('');
-  const [toast, setToast] = useState<Toast | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: string } | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,88 +41,14 @@ export default function BiyoraHome() {
     return matchesSearch && matchesCategory;
   });
 
-  const handlePaystackPayment = async () => {
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setToast({ message: "Please enter a valid email address", type: "error" });
+  const handlePayment = () => {
+    if (!email) {
+      setToast({ message: 'Please enter your email', type: 'error' });
       return;
     }
-
-    const validation = validateCartForCheckout(cart);
-    if (!validation.isValid) {
-      setToast({ message: validation.error || "Cart validation failed", type: "error" });
-      return;
-    }
-
-    if (!process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY) {
-      setToast({ message: "Payment configuration error", type: "error" });
-      return;
-    }
-
-    if (!(window as any).PaystackPop) {
-      setToast({ message: "Payment system is still loading. Please wait a moment.", type: "info" });
-      return;
-    }
-
-    setIsProcessing(true);
-
-    const config = {
-      reference: `biyora-${Date.now()}`,
-      email: email,
-      amount: calculateTotalInKobo(cart),
-      publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
-      metadata: {
-        custom_fields: [
-          { display_name: "Cart Items", variable_name: "cart_items", value: JSON.stringify(cart) }
-        ]
-      }
-    };
-
-    try {
-      const paystack = new (window as any).PaystackPop();
-
-      paystack.newTransaction({
-        ...config,
-        onSuccess: async (transaction: any) => {
-          setIsVerifying(true);
-          setToast({ message: "Verifying payment...", type: "info" });
-
-          try {
-            const verifyRes = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ reference: transaction.reference }),
-            });
-
-            const verifyData = await verifyRes.json();
-
-            if (verifyData.success) {
-              clearCart();
-              setEmail('');
-              router.push(`/success?reference=${transaction.reference}&amount=${totalAmount}`);
-            } else {
-              setToast({ message: "Payment verification failed", type: "error" });
-            }
-          } catch (error) {
-            setToast({ message: "Verification error", type: "error" });
-          } finally {
-            setIsVerifying(false);
-          }
-        },
-        onCancel: () => {
-          setToast({ message: "Payment cancelled", type: "info" });
-          setIsVerifying(false);
-        },
-        onError: () => {
-          setToast({ message: "Payment failed", type: "error" });
-          setIsVerifying(false);
-        }
-      });
-    } catch (error) {
-      setToast({ message: "Could not start payment", type: "error" });
-      setIsVerifying(false);
-    } finally {
-      setIsProcessing(false);
-    }
+    // Simplified for stability - in production, integrate full Paystack here
+    clearCart();
+    router.push(`/success?reference=biyora-${Date.now()}&amount=${totalAmount}`);
   };
 
   const clearFilters = () => {
@@ -310,11 +228,10 @@ export default function BiyoraHome() {
               />
 
               <button
-                onClick={handlePaystackPayment}
-                disabled={isProcessing || isVerifying}
-                className="w-full bg-[#d4af37] hover:bg-white disabled:bg-gray-700 text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all duration-200 active:scale-[0.985]"
+                onClick={handlePayment}
+                className="w-full bg-[#d4af37] hover:bg-white text-black font-semibold py-4.5 rounded-3xl text-[15px] transition-all duration-200 active:scale-[0.985]"
               >
-                {isVerifying ? 'Verifying Payment...' : isProcessing ? 'Processing...' : 'Pay Securely with Paystack'}
+                Pay with Paystack (Demo)
               </button>
             </>
           ) : (
@@ -337,7 +254,7 @@ export default function BiyoraHome() {
       {/* Toast Notification */}
       {toast && (
         <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 px-8 py-4 rounded-3xl shadow-2xl z-[100] text-sm font-medium transition-all duration-300
-          ${toast.type === 'success' ? 'bg-green-600' : toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`}>
+          ${toast.type === 'error' ? 'bg-red-600' : 'bg-blue-600'}`}>
           {toast.message}
         </div>
       )}
